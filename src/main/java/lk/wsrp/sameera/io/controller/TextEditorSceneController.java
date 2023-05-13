@@ -3,13 +3,13 @@ package lk.wsrp.sameera.io.controller;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.print.PageLayout;
+import javafx.print.Printer;
+import javafx.print.PrinterJob;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.MenuItem;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.input.DragEvent;
+import javafx.scene.input.TransferMode;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
@@ -20,6 +20,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URL;
+import java.util.Optional;
 
 public class TextEditorSceneController {
 
@@ -77,26 +78,6 @@ public class TextEditorSceneController {
     }
 
     @FXML
-    void btnFindOnAction(ActionEvent event) {
-
-    }
-
-    @FXML
-    void btnNextOnAction(ActionEvent event) {
-
-    }
-
-    @FXML
-    void btnPreviousOnAction(ActionEvent event) {
-
-    }
-
-    @FXML
-    void btnReplaceOnAction(ActionEvent event) {
-
-    }
-
-    @FXML
     void mnAboutOnAction(ActionEvent event) throws IOException {
         Stage aboutStage = new Stage();
         URL fxmlFile = getClass().getResource("/view/AboutScene.fxml");
@@ -112,13 +93,54 @@ public class TextEditorSceneController {
     }
 
     @FXML
-    void mnCloseOnAction(ActionEvent event) {
+    void mnCloseOnAction(ActionEvent event) throws IOException {
+        if (currentFile == null && stage.getTitle().contains("*")) {
+            saveFileBeforeClose(event);
+        } else if (currentFile != null && stage.getTitle().contains("*")) {
+            saveFileBeforeClose(event);
+        } else {
+            stage.close();
+        }
+    }
 
+    private void saveFileBeforeClose(ActionEvent event) throws IOException {
+        Alert confirmAlert = new Alert(Alert.AlertType.CONFIRMATION,
+                String.format("Save changes to document %s before closing?", stage.getTitle()),
+                ButtonType.NO, ButtonType.CANCEL, ButtonType.YES);
+        Optional<ButtonType> optButton = confirmAlert.showAndWait();
+
+        if (optButton.isEmpty() || optButton.get() == ButtonType.CANCEL) {
+            event.consume();
+            return;
+        }
+
+        if (optButton.get() == ButtonType.YES) {
+            mnSaveOnAction(event);
+            return;
+        }
+        stage.close();
     }
 
     @FXML
-    void mnNewOnAction(ActionEvent event) {
+    void mnNewOnAction(ActionEvent event) throws IOException {
+        if (stage.getTitle().contains("*")) {
+            Optional<ButtonType> optButton = new Alert(Alert.AlertType.CONFIRMATION,
+                    String.format("Do you want to save the current file?"),
+                    ButtonType.YES, ButtonType.NO,ButtonType.CANCEL).showAndWait();
 
+            if (optButton.isEmpty() || optButton.get() == ButtonType.CANCEL) {
+                return;
+            }
+
+            if (optButton.get() == ButtonType.NO) {
+                txtEditor.clear();
+                stage.setTitle("Untitled Document");
+                return;
+            }
+            mnSaveOnAction(event);
+            txtEditor.clear();
+            stage.setTitle("Untitled Document");
+        }
     }
 
     @FXML
@@ -139,7 +161,20 @@ public class TextEditorSceneController {
 
     @FXML
     void mnPrintOnAction(ActionEvent event) {
-
+        Printer defaultPrinter = Printer.getDefaultPrinter();
+        if (defaultPrinter == null) {
+            new Alert(Alert.AlertType.ERROR, "No default printer has been configured!").showAndWait();
+            return;
+        }
+        PrinterJob printerJob = PrinterJob.createPrinterJob();
+        if (printerJob.showPrintDialog(txtEditor.getScene().getWindow())) {
+            PageLayout pageLayout = printerJob.getJobSettings().getPageLayout();
+            printerJob.getJobSettings().setPageLayout(pageLayout);
+            boolean success = printerJob.printPage(txtEditor);
+            if (success) {
+                printerJob.endJob();
+            }
+        }
     }
 
     @FXML
@@ -177,12 +212,37 @@ public class TextEditorSceneController {
     }
 
     @FXML
-    void rootOnDragDropped(DragEvent event) {
-
+    void rootOnDragDropped(DragEvent event) throws IOException {
+        event.setDropCompleted(true);
+        File droppedFile = event.getDragboard().getFiles().get(0);
+        FileInputStream fis = new FileInputStream(droppedFile);
+        byte[] bytes = fis.readAllBytes();
+        fis.close();
+        txtEditor.setText(new String(bytes));
     }
 
     @FXML
     void rootOnDragOver(DragEvent event) {
+        event.acceptTransferModes(TransferMode.ANY);
+    }
+
+    @FXML
+    void btnFindOnAction(ActionEvent event) {
+
+    }
+
+    @FXML
+    void btnNextOnAction(ActionEvent event) {
+
+    }
+
+    @FXML
+    void btnPreviousOnAction(ActionEvent event) {
+
+    }
+
+    @FXML
+    void btnReplaceOnAction(ActionEvent event) {
 
     }
 }
