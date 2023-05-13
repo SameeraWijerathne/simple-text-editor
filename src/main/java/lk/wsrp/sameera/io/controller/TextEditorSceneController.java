@@ -163,8 +163,17 @@ public class TextEditorSceneController {
     }
 
     @FXML
-    void mnSaveOnAction(ActionEvent event) {
-
+    void mnSaveOnAction(ActionEvent event) throws IOException {
+        if (currentFile == null) {
+            mnSaveAsOnAction(event);
+        } else {
+            FileOutputStream fos = new FileOutputStream(currentFile);
+            String text = txtEditor.getText();
+            byte[] bytes = text.getBytes();
+            fos.write(bytes);
+            stage.setTitle(currentFile.getName());
+            fos.close();
+        }
     }
 
     @FXML
