@@ -17,6 +17,7 @@ import javafx.stage.Stage;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URL;
 
@@ -142,8 +143,23 @@ public class TextEditorSceneController {
     }
 
     @FXML
-    void mnSaveAsOnAction(ActionEvent event) {
+    void mnSaveAsOnAction(ActionEvent event) throws IOException {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Save the text file");
+        fileChooser.setInitialFileName("Untitled Document.txt");
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("All Text Files (*.txt, *.html)", "*.txt", "*.html"));
+        File file = fileChooser.showSaveDialog(txtEditor.getScene().getWindow());
+        if (file == null) return;
 
+        FileOutputStream fos = new FileOutputStream(file);
+        String text= txtEditor.getText();
+        byte[] bytes = text.getBytes();
+        fos.write(bytes);
+
+        currentFile = file;
+
+        stage.setTitle(file.getName());
+        fos.close();
     }
 
     @FXML
