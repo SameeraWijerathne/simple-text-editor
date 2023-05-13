@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="500.0" prefWidth="600.0" style="-fx-background-color: rgba(0,0,0,0);" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lk.wsrp.sameera.io.controller.SplashSceneController">
+    <children>
+        <ImageView fitHeight="97.0" fitWidth="158.0" layoutX="252.0" layoutY="212.0" pickOnBounds="true" preserveRatio="true">
+            <image>
+                <Image url="@../img/loading.gif" />
+            </image>
+        </ImageView>
+        <AnchorPane layoutX="64.0" layoutY="305.0" prefHeight="131.0" prefWidth="463.0" style="-fx-background-color: rgb(255,255,255);" AnchorPane.leftAnchor="64.0" AnchorPane.rightAnchor="64.0">
+            <children>
+                <Label fx:id="lblLoader" alignment="CENTER" layoutX="122.0" layoutY="96.0" prefHeight="21.0" prefWidth="228.0" text="Loading text">
+                    <font>
+                        <Font size="15.0" />
+                    </font>
+                </Label>
+              <Label alignment="CENTER" layoutX="12.0" text="EDITEASE TEXT EDITOR" textFill="#09d6e1" AnchorPane.rightAnchor="12.0">
+                  <font>
+                      <Font name="FreeSans Bold" size="37.0" />
+                  </font>
+              </Label>
+            </children>
+        </AnchorPane>
+        <Label layoutX="268.0" layoutY="361.0" text="V 1.0.0">
+            <font>
+                <Font size="20.0" />
+            </font>
+        </Label>
+      <ImageView fitHeight="200.0" fitWidth="200.0" layoutX="200.0" layoutY="14.0">
+         <image>
+            <Image url="@../img/type.png" />
+         </image>
+      </ImageView>
+    </children>
+</AnchorPane>
