@@ -10,7 +10,7 @@
     <children>
         <ImageView fitHeight="200.0" fitWidth="180.0" layoutX="225.0" layoutY="13.0" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="225.0" AnchorPane.rightAnchor="225.0" AnchorPane.topAnchor="13.0">
             <image>
-                <Image url="@../img/type.png" />
+                <Image url="@../img/logo.png" />
             </image>
         </ImageView>
         <Label alignment="CENTER" layoutX="5.0" layoutY="207.0" text="EditEase Text Editor" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">

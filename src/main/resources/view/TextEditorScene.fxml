@@ -14,7 +14,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="root" onDragDropped="#rootOnDragDropped" onDragOver="#rootOnDragOver" prefHeight="800.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lk.wsrp.sameera.io.controller.TextEditorSceneController">
+<AnchorPane fx:id="root" onDragDropped="#rootOnDragDropped" onDragOver="#rootOnDragOver" prefHeight="800.0" prefWidth="1000.0" stylesheets="@../css/TextEditorScene.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lk.wsrp.sameera.io.controller.TextEditorSceneController">
    <children>
       <MenuBar layoutY="8.0" prefHeight="30.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="0.0">
         <menus>
@@ -56,7 +56,7 @@
           </Menu>
         </menus>
       </MenuBar>
-      <TextArea fx:id="txtEditor" layoutX="160.0" layoutY="87.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="100.0">
+      <TextArea fx:id="txtEditor" layoutX="160.0" layoutY="87.0" prefHeight="675.0" prefWidth="970.0" wrapText="true" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="110.0">
          <font>
             <Font size="15.0" />
          </font></TextArea>
@@ -67,21 +67,21 @@
                <children>
                   <HBox spacing="10.0">
                      <children>
-                        <Button fx:id="btnFind" mnemonicParsing="false" onAction="#btnFindOnAction" prefWidth="75.0" text="Find" />
-                        <Button fx:id="btnReplace" mnemonicParsing="false" onAction="#btnReplaceOnAction" prefWidth="75.0" text="Replace" />
+                        <Button fx:id="btnFind" mnemonicParsing="false" onAction="#btnFindOnAction" prefHeight="30.0" prefWidth="75.0" text="Find" />
+                        <Button fx:id="btnReplace" mnemonicParsing="false" onAction="#btnReplaceOnAction" prefHeight="30.0" prefWidth="75.0" text="Replace" />
                      </children>
                   </HBox>
                   <HBox spacing="10.0">
                      <children>
-                        <Button fx:id="btnPrevious" mnemonicParsing="false" onAction="#btnPreviousOnAction" prefWidth="75.0" text="Previous" />
-                        <Button fx:id="btnNext" mnemonicParsing="false" onAction="#btnNextOnAction" prefWidth="75.0" text="Next" />
+                        <Button fx:id="btnPrevious" mnemonicParsing="false" onAction="#btnPreviousOnAction" prefHeight="30.0" prefWidth="75.0" text="Previous" />
+                        <Button fx:id="btnNext" mnemonicParsing="false" onAction="#btnNextOnAction" prefHeight="30.0" prefWidth="75.0" text="Next" />
                      </children>
                   </HBox>
                </children>
             </VBox>
             <TextField fx:id="txtReplace" alignment="CENTER" promptText="Enter text to replace" />
-            <Label fx:id="lblResults" text="0 Results" />
          </children>
       </HBox>
+      <Label fx:id="lblResults" layoutX="915.0" layoutY="96.0" text="0 Results" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="55.0" />
    </children>
 </AnchorPane>

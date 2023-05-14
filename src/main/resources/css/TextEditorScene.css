@@ -1,0 +1,37 @@
+root {
+    -fx-background-color: white;
+}
+
+#txtSearch,
+#txtReplace {
+    -fx-text-fill: #00cfff;
+}
+
+#btnFind,
+#btnReplace {
+    -fx-text-fill: white;
+    -fx-background-color: darkgreen;
+}
+
+#btnFind:hover,
+#btnReplace:hover {
+    -fx-background-color: rgba(0, 100, 0, 0.78);
+}
+
+#btnPrevious,
+#btnNext {
+    -fx-background-color: darkred;
+    -fx-text-fill: white;
+}
+
+#btnPrevious:hover,
+#btnNext:hover {
+    -fx-background-color: rgba(139, 0, 0, 0.84);
+}
+#lblResults {
+    -fx-font-weight: bold;
+}
+
+#txtEditor {
+    -fx-highlight-fill: darkgray;
+}

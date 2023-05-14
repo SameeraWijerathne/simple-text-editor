@@ -14,13 +14,18 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import lk.wsrp.sameera.io.util.SearchResult;
+
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Optional;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class TextEditorSceneController {
 
@@ -55,6 +60,8 @@ public class TextEditorSceneController {
     private TextField txtSearch;
     private Stage stage;
     private File currentFile;
+    private ArrayList<SearchResult> searchResultList = new ArrayList<>();
+    private int pos = 0;
 
     public void setStage(Stage stage) {
         this.stage = stage;
@@ -228,21 +235,64 @@ public class TextEditorSceneController {
 
     @FXML
     void btnFindOnAction(ActionEvent event) {
+        pos = 0;
+        searchResultList.clear();
+        String searchText = txtSearch.getText();
+        if (!searchText.isEmpty()) {
+            Pattern pattern = Pattern.compile(searchText, Pattern.CASE_INSENSITIVE);
+            Matcher matcher = pattern.matcher(txtEditor.getText());
+            while (matcher.find()) {
+                SearchResult result = new SearchResult(matcher.start(), matcher.end());
+                searchResultList.add(result);
+            }
+            lblResults.setText(String.format("%d Results", searchResultList.size()));
+            select();
+        }
+    }
 
+    private void select() {
+        if (searchResultList.isEmpty()) return;
+        SearchResult searchResult = searchResultList.get(pos);
+        txtEditor.selectRange(searchResult.getStart(), searchResult.getEnd());
+        txtEditor.setStyle("-fx-highlight-fill: #FFFF00;");
+        lblResults.setText(String.format("%d/%d Results", (pos + 1), searchResultList.size()));
     }
 
     @FXML
     void btnNextOnAction(ActionEvent event) {
-
+        pos++;
+        if (pos == searchResultList.size()) {
+            pos = -1;
+            return;
+        }
+        select();
     }
 
     @FXML
     void btnPreviousOnAction(ActionEvent event) {
-
+        pos--;
+        if (pos < 0) {
+            pos = searchResultList.size();
+            return;
+        }
+        select();
     }
 
     @FXML
     void btnReplaceOnAction(ActionEvent event) {
+        if (pos == 0) return;
+        String searchText = txtSearch.getText();
+        String replaceText = txtReplace.getText();
+        if (!searchText.isEmpty()) {
+            String text = txtEditor.getText();
+            int startingIndex = searchResultList.get(pos).getStart();
+            int endingIndex = searchResultList.get(pos).getEnd();
 
+            String substringBefore = text.substring(0, startingIndex);
+            String substringAfter = text.substring(endingIndex);
+            String textAfterReplace = substringBefore.concat(replaceText).concat(substringAfter);
+            txtEditor.clear();
+            txtEditor.setText(textAfterReplace);
+        }
     }
 }
